@@ -1,4 +1,4 @@
-## bases-node ####(proyecto para iniciar desde 0 a experto en node)
+## bases-node (Proyecto para iniciar desde 0 a experto en node)
 
 ### Se recomienda instalar los siguientes plugins y Versiones en visual studio 
 + Ultima Version mas Estable de node js
