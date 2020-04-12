@@ -9,3 +9,9 @@
 + TypeScript Importer
 + vscode-icons
 + nodemon -g
+
+### Recuerda ejecutar
+
+```
+npm install
+```
