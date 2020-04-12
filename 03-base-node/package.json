@@ -1,0 +1,16 @@
+{
+    "name": "03-base-node",
+    "version": "1.0.0",
+    "description": "Aplicacion de linea de comandos",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Sebastian Gonzalez",
+    "license": "MIT",
+    "dependencies": {
+        "colors": "^1.4.0",
+        "yargs": "^15.3.1"
+    },
+    "devDependencies": {}
+}
