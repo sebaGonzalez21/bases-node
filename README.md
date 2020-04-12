@@ -8,3 +8,4 @@
 + Material Icon Theme
 + TypeScript Importer
 + vscode-icons
++ nodemon -g
