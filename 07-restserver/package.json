@@ -1,0 +1,17 @@
+{
+    "name": "07-restserver",
+    "version": "1.0.0",
+    "description": "rest service",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./server/server",
+        "nodemon": "nodemon ./server/server",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Sebastian Gonzalez",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1"
+    }
+}
