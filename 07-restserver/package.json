@@ -4,8 +4,8 @@
     "description": "rest service",
     "main": "app.js",
     "scripts": {
-        "start": "node ./server/server",
-        "nodemon": "nodemon ./server/server",
+        "start": "node app.js",
+        "nodemon": "nodemon app.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "Sebastian Gonzalez",
