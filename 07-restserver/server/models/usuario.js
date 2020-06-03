@@ -40,7 +40,7 @@ let usuarioSchema = new Schema({
         default: false
     } //boolean
 });
-
+//Eliminar data sensible luego de retornar
 usuarioSchema.methods.toJSON = function() {
     let user = this;
     let userObject = user.toObject();

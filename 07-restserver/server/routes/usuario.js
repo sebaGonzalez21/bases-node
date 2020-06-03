@@ -1,14 +1,22 @@
 const express = require('express')
 const app = express();
-const bcrypt = require('bcrypt')
-const _ = require('underscore')
-
+const bcrypt = require('bcrypt');
+const _ = require('underscore');
+const { verificaToken, verificaAdminRole } = require('../middlewares/autenticacion');
 const Usuario = require('../models/usuario');
 
 
-app.get('/usuarios', function(req, res) {
+app.get('/usuarios', verificaToken, (req, res) => {
 
     try {
+
+        /*
+        return res.json({
+            usuario: req.usuario,
+            nombre: req.usuario.nombre,
+            email: req.usuario.email
+        })*/
+
         let desde = req.query.desde || 0;
         desde = Number(desde);
 
@@ -48,7 +56,7 @@ app.get('/usuarios', function(req, res) {
 })
 
 
-app.post('/usuarios', function(req, res) {
+app.post('/usuarios', [verificaToken, verificaAdminRole], (req, res) => {
     try {
 
         let body = req.body;
@@ -79,7 +87,7 @@ app.post('/usuarios', function(req, res) {
 
 })
 
-app.put('/usuarios/:id', function(req, res) {
+app.put('/usuarios/:id', [verificaToken, verificaAdminRole], function(req, res) {
     try {
 
         let id = req.params.id;
@@ -105,7 +113,7 @@ app.put('/usuarios/:id', function(req, res) {
     }
 })
 
-app.delete('/usuarios/:id', function(req, res) {
+app.delete('/usuarios/:id', [verificaToken, verificaAdminRole], (req, res) => {
     try {
 
         let id = req.params.id;
