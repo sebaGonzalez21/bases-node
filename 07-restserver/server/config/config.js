@@ -29,10 +29,14 @@ if (process.env.NODE_ENV === 'dev') {
     urlDatabase = process.env.MONGO_URI;
 }
 process.env.URLDB = urlDatabase;
+// ========================
+// GOOGLE CLIENT ID
+// ========================
+process.env.CLIENT_ID = process.env.CLIENT_ID || "401848657332-p0vullk68v9pugdm62rcaesa36tivilu.apps.googleusercontent.com"
+    // ========================
+    // CONEXION MONGO
+    // ========================
 
-// ========================
-// CONEXION MONGO
-// ========================
 
 const conectionDb = async() => {
     //'mongodb://cafe:cafe@localhost/cafe'
