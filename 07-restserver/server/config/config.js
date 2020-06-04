@@ -32,12 +32,15 @@ process.env.URLDB = urlDatabase;
 // ========================
 // GOOGLE CLIENT ID
 // ========================
-process.env.CLIENT_ID = process.env.CLIENT_ID || "401848657332-p0vullk68v9pugdm62rcaesa36tivilu.apps.googleusercontent.com"
-    // ========================
-    // CONEXION MONGO
-    // ========================
+process.env.CLIENT_ID = process.env.CLIENT_ID || "401848657332-p0vullk68v9pugdm62rcaesa36tivilu.apps.googleusercontent.com";
 
-
+// ========================
+// ENDPOINT GOOGLE
+// ========================
+process.env.ENDPOINT_GOOGLE = process.env.ENDPOINT_GOOGLE || "http://localhost:3000/google";
+// ========================
+// CONEXION MONGO
+// ========================
 const conectionDb = async() => {
     //'mongodb://cafe:cafe@localhost/cafe'
     return await mongoose.connect(process.env.URLDB, {

@@ -29,7 +29,7 @@
             console.log("idToken", id_token)
 
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'http://localhost:3000/google');
+            xhr.open('POST', "https://app-backend-rest-server.herokuapp.com");
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.onload = function() {
                 console.log('Signed in as: ' + xhr.responseText);
