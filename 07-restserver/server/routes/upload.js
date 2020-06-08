@@ -4,6 +4,7 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const Usuario = require('../models/usuario');
+const Producto = require('../models/producto');
 
 // default options
 app.use(fileUpload({ useTempFiles: true }));
@@ -44,7 +45,7 @@ app.put('/upload/:tipo/:id', function(req, res) {
                 return res.status(500).json({ ok: false, err: err });
             };
 
-            return imagenUsuario(id, res, nombreArchivo);
+            return imagenUsuario(id, res, nombreArchivo, tipo);
 
         });
     } catch (err) {
@@ -52,29 +53,67 @@ app.put('/upload/:tipo/:id', function(req, res) {
     }
 });
 
-const imagenUsuario = (id, res, nombreArchivo) => {
-    Usuario.findById(id, (err, usuarioDb) => {
-        if (err) {
-            return res.status(500).json({ ok: false, err: err });
-        }
+const imagenUsuario = (id, res, nombreArchivo, tipo) => {
+    switch (tipo) {
+        case 'usuarios':
+            Usuario.findById(id, (err, usuarioDb) => {
+                if (err) {
+                    borrarArchivo(nombreArchivo, tipo);
+                    return res.status(500).json({ ok: false, err: err });
+                }
 
-        if (!usuarioDb) {
-            return res.status(400).json({ ok: false, err: 'Usuario no existe' });
-        };
+                if (!usuarioDb) {
+                    borrarArchivo(nombreArchivo, tipo);
+                    return res.status(400).json({ ok: false, err: 'Usuario no existe' });
+                };
 
+                borrarArchivo(usuarioDb.img, tipo);
 
-        usuarioDb.img = nombreArchivo;
-        usuarioDb.save((err, usuarioSave) => {
-            if (err) {
-                return res.status(500).json({ ok: false, err: err });
-            }
-            return res.json({ ok: true, usuario: usuarioSave, img: nombreArchivo });
-        });
-    });
+                usuarioDb.img = nombreArchivo;
+                usuarioDb.save((err, usuarioSave) => {
+                    if (err) {
+                        return res.status(500).json({ ok: false, err: err });
+                    }
+                    return res.json({ ok: true, usuario: usuarioSave });
+                });
+            });
+            break;
+        case 'productos':
+
+            Producto.findById(id, (err, productoDb) => {
+                if (err) {
+                    borrarArchivo(nombreArchivo, tipo);
+                    return res.status(500).json({ ok: false, err: err });
+                }
+
+                if (!productoDb) {
+                    borrarArchivo(nombreArchivo, tipo);
+                    return res.status(400).json({ ok: false, err: 'Usuario no existe' });
+                };
+
+                borrarArchivo(productoDb.img, tipo);
+
+                productoDb.img = nombreArchivo;
+                productoDb.save((err, productoSave) => {
+                    if (err) {
+                        return res.status(500).json({ ok: false, err: err });
+                    }
+                    return res.json({ ok: true, productoSave: productoSave });
+                });
+            });
+            break;
+        default:
+            return res.status(500).json({ ok: false, err: 'Seleccione un tipo valido!' });
+    }
 };
 
-const imagenProducto = () => {
+const borrarArchivo = (nombreImagen, tipo) => {
+    //path imagen
+    let pathImage = path.resolve(__dirname, `../../uploads/${tipo}/${nombreImagen}`);
 
+    if (fs.existsSync(pathImage)) {
+        fs.unlinkSync(pathImage);
+    };
 };
 
 module.exports = app;

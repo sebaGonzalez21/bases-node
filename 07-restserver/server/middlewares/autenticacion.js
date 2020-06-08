@@ -46,10 +46,36 @@ let verificaAdminRole = (req, res, next) => {
             message: "Error en verificacion de role"
         })
     }
+};
 
+// ========================
+// Verificar Token de Imagen
+// ========================
+let verificaTokenImagen = (req, res, next) => {
+    try {
+        let token = req.query.token;
 
-}
+        jwt.verify(token, process.env.SEED, (err, decoded) => {
+            if (err) {
+                return res.status(401).json({
+                    ok: false,
+                    message: "Token no valido"
+                })
+            }
+
+            req.usuario = decoded.usuario;
+            next();
+        });
+    } catch (err) {
+        return res.status(500).json({
+            ok: false,
+            message: "Error en verificacion de token"
+        })
+    };
+};
+
 module.exports = {
     verificaToken,
-    verificaAdminRole
+    verificaAdminRole,
+    verificaTokenImagen
 };
