@@ -57,6 +57,39 @@ app.get('/productos/:id', verificaToken, (req, res) => {
                     return res.status(500).json({ ok: false, message: err });
                 }
 
+                if (!productoDb) {
+                    return res.status(500).json({ ok: false, message: 'Producto no identificado' });
+                }
+
+                return res.json({ ok: true, productos: productoDb });
+            });
+    } catch (err) {
+        return res.status(500).json({ ok: false, message: 'Error de sistema al obtener un producto' });
+    }
+});
+
+// ========================
+// Buscar Productos
+// ========================
+
+app.get('/productos/buscar/:termino', verificaToken, (req, res) => {
+    try {
+
+        let termino = req.params.termino;
+
+        //expresion regular
+        let regex = new RegExp(termino, 'i');
+        Producto.find({ nombre: regex })
+            .populate('categoria', 'nombre')
+            .exec((err, productoDb) => {
+                if (err) {
+                    return res.status(500).json({ ok: false, message: err });
+                }
+
+                if (!productoDb) {
+                    return res.status(500).json({ ok: false, message: 'Producto no identificado' });
+                }
+
                 return res.json({ ok: true, productos: productoDb });
             });
     } catch (err) {
