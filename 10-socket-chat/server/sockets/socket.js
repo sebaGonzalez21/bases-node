@@ -16,34 +16,35 @@ io.on('connection', (client) => {
         }
 
         client.join(data.sala);
-        let personas = usuarios.agregarPersona(client.id, data.nombre, data.sala);
-        usuarios.getPersonas(client.id, data.nombre);
+        let personas = usuarios.getPersona(client.id);
+        if (!personas) {
+            personas = usuarios.agregarPersona(client.id, data.nombre, data.sala);
+            usuarios.getPersonas(client.id, data.nombre);
+        }
         client.broadcast.to(data.sala).emit('listaPersona', usuarios.getPersonas());
-        callback(personas);
+        client.broadcast.to(data.sala).emit('crearMensaje', crearMensaje('Administrador', `${data.nombre} se unió`))
 
+        callback(personas);
     })
 
-    client.on('crearMensaje', (data) => {
-
+    client.on('crearMensaje', (data, callback) => {
         let persona = usuarios.getPersona(client.id);
         let mensaje = crearMensaje(persona.nombre, data.mensaje);
         client.broadcast.to(persona.sala).emit('crearMensaje', mensaje);
+
+        callback(mensaje);
     });
 
     client.on('disconnect', () => {
+        console.log("se va a desconectar...");
         let personaBorrada = usuarios.borrarPersona(client.id);
-        if (personaBorrada) {
-            console.log("borrando persona", personaBorrada)
-            client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje('Administrador', `${personaBorrada.nombre} salió`))
-            client.broadcast.to(personaBorrada.sala).emit('listaPersona', usuarios.getPersonasPorSala(personaBorrada.sala));
-        }
+        client.broadcast.to(personaBorrada.sala).emit('crearMensaje', crearMensaje('Administrador', `${personaBorrada.nombre} salió`))
+        client.broadcast.emit('listaPersona', usuarios.getPersonasPorSala(personaBorrada.sala));
     });
 
     //mensajes privados
     client.on('mensajePrivado', data => {
-
         let persona = usuarios.getPersona(client.id);
-
         client.broadcast.to(data.id).emit('mensajePrivado', crearMensaje(persona.nombre, data.mensaje));
     })
 
